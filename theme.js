@@ -9,6 +9,7 @@ const theme = StyleSheet.create({
 const colors = {
   primary: '#f86730',
   primaryDeep: '#f74f0f',
+  primaryLight: '#FDAC8E',
 };
 
 export {colors};
