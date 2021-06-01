@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
 import theme, {colors} from '../theme';
 import ComfortableCard from './ComfortableCard';
 import Header from './Header';
@@ -16,18 +23,31 @@ class Main extends Component {
     loading: false,
     offset: 0,
     refreshing: false,
+    fadeValue: new Animated.Value(0),
+  };
+
+  startAnimation = () => {
+    Animated.timing(this.state.fadeValue, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
   };
 
   toggleView = (value = null) => {
+    let newValue = false;
     if (value) {
-      this.setState({
-        compactView: value,
-      });
+      newValue = value;
     } else {
-      this.setState({
-        compactView: !this.state.compactView,
-      });
+      newValue = !this.state.compactView;
     }
+    this.setState(
+      {
+        compactView: newValue,
+        fadeValue: new Animated.Value(0),
+      },
+      () => this.startAnimation(),
+    );
   };
 
   getNews = async () => {
@@ -44,6 +64,7 @@ class Main extends Component {
           loading: false,
           refreshing: false,
         });
+        this.startAnimation();
       }
     } catch (err) {
       console.log(err);
@@ -56,6 +77,7 @@ class Main extends Component {
         refreshing: true,
         offset: 0,
         data: [],
+        fadeValue: new Animated.Value(0),
       },
       () => this.getNews(),
     );
@@ -89,18 +111,24 @@ class Main extends Component {
           </TouchableOpacity>
         </View>
         <View
-          style={
-            compactView ? styles.compactListCont : styles.comfortableListCont
-          }
+          style={[
+            compactView ? styles.compactListCont : styles.comfortableListCont,
+          ]}
           key={compactView}>
           <FlatList
             numColumns={compactView ? 2 : 1}
             data={newsItems}
             renderItem={({item}) =>
               compactView ? (
-                <CompactCard data={item} />
+                <CompactCard
+                  data={item}
+                  contStyle={{opacity: this.state.fadeValue}}
+                />
               ) : (
-                <ComfortableCard data={item} />
+                <ComfortableCard
+                  data={item}
+                  contStyle={{opacity: this.state.fadeValue}}
+                />
               )
             }
             keyExtractor={newsItem => newsItem._id}

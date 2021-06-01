@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Animated, Text, Image, StyleSheet} from 'react-native';
 import {colors} from '../theme';
 import {getDate, getTime} from '../utility';
 
 const CompactCard = props => {
-  const {data} = props;
+  const {data = {}, contStyle = null} = props;
   const {imageUrl = '', createdAt = ''} = data;
   return (
-    <View>
+    <Animated.View style={contStyle}>
       {data && (
         <View style={styles.cont}>
           <Image
@@ -21,7 +21,7 @@ const CompactCard = props => {
           <Text style={styles.time}>{getTime(createdAt)}</Text>
         </View>
       )}
-    </View>
+    </Animated.View>
   );
 };
 

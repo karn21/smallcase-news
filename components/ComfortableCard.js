@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
 import {colors} from '../theme';
 import {formatTimestamp} from '../utility';
 
@@ -15,13 +22,13 @@ class ComfortableCard extends Component {
   };
 
   render() {
-    const {data = {}} = this.props;
+    const {data = {}, contStyle = null} = this.props;
     const {headline = '', summary = '', imageUrl = '', createdAt = ''} = data;
     const {expanded} = this.state;
     return (
-      <View>
+      <Animated.View style={contStyle}>
         {data && (
-          <View style={styles.cont} elevation={1}>
+          <View style={[styles.cont]} elevation={1}>
             <Image
               style={styles.img}
               source={{
@@ -37,8 +44,8 @@ class ComfortableCard extends Component {
                   : headline}
               </Text>
               <Text style={styles.desc}>
-                {summary.length > 123 && !expanded
-                  ? summary.substring(0, 120) + '...'
+                {summary.length > 114 && !expanded
+                  ? summary.substring(0, 111) + '...'
                   : summary}
               </Text>
               {expanded && (
@@ -47,7 +54,7 @@ class ComfortableCard extends Component {
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </Animated.View>
     );
   }
 }
