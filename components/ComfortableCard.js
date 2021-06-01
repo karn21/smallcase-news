@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    color: colors.primaryDeep,
+    color: colors.primary,
     lineHeight: 18,
     fontWeight: 'bold',
   },

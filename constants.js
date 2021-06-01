@@ -3,4 +3,6 @@ const apiEndpoints = {
     `https://api.smallcase.com/news/getNews?count=${count}&offset=${offset}`,
 };
 
+export const newsItemLimit = 20;
+
 export {apiEndpoints};
