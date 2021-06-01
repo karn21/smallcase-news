@@ -24,6 +24,7 @@ class Main extends Component {
     offset: 0,
     refreshing: false,
     fadeValue: new Animated.Value(0),
+    scrollPos: 0,
   };
 
   startAnimation = () => {
@@ -46,7 +47,12 @@ class Main extends Component {
         compactView: newValue,
         fadeValue: new Animated.Value(0),
       },
-      () => this.startAnimation(),
+      () => {
+        this.startAnimation();
+        setTimeout(() => {
+          this._flatList.scrollToOffset({offset: this.state.scrollPos});
+        }, 100);
+      },
     );
   };
 
@@ -83,6 +89,12 @@ class Main extends Component {
     );
   };
 
+  handleScroll = e => {
+    this.setState({
+      scrollPos: e.nativeEvent.contentOffset.y,
+    });
+  };
+
   componentDidMount() {
     this.getNews();
   }
@@ -116,6 +128,9 @@ class Main extends Component {
           ]}
           key={compactView}>
           <FlatList
+            ref={ref => {
+              this._flatList = ref;
+            }}
             numColumns={compactView ? 2 : 1}
             data={newsItems}
             renderItem={({item}) =>
@@ -138,6 +153,7 @@ class Main extends Component {
             ListFooterComponent={<LoadingComponent loading={loading} />}
             refreshing={refreshing}
             onRefresh={this.refreshData}
+            onScroll={this.handleScroll}
           />
         </View>
       </View>
