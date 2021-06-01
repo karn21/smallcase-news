@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
+import {colors} from '../theme';
 
 const ComfortableCard = props => {
   const {data = {}} = props;
@@ -17,8 +18,8 @@ const ComfortableCard = props => {
           />
           <View style={styles.txtWrap}>
             <Text style={styles.title}>
-              {headline.length > 80
-                ? headline.substring(0, 80) + '...'
+              {headline.length > 72
+                ? headline.substring(0, 72) + '...'
                 : headline}
             </Text>
             <Text style={styles.desc}>
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: 80,
-    height: 80,
+    height: '100%',
     borderRadius: 10,
   },
   txtWrap: {
@@ -53,12 +54,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    color: '#4a4a4a',
+    color: colors.primaryDeep,
+    lineHeight: 18,
+    fontWeight: 'bold',
   },
   desc: {
-    marginTop: 3,
+    marginTop: 5,
     fontSize: 12,
     color: '#707070',
+    lineHeight: 15,
+    letterSpacing: 0.6,
   },
 });
 

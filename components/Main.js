@@ -6,6 +6,7 @@ import Header from './Header';
 import PrimaryToggle from './PrimaryToggle';
 import axios from 'axios';
 import {apiEndpoints} from '../constants';
+import CompactCard from './CompactCard';
 
 class Main extends Component {
   state = {
@@ -56,13 +57,24 @@ class Main extends Component {
             Compact View
           </Text>
         </View>
-        <View style={styles.listCont}>
-          <FlatList
-            data={data}
-            renderItem={({item}) => <ComfortableCard data={item} />}
-            keyExtractor={newsItem => newsItem._id}
-          />
-        </View>
+        {compactView ? (
+          <View style={styles.compactListCont} key={compactView}>
+            <FlatList
+              numColumns={2}
+              data={data}
+              renderItem={({item}) => <CompactCard data={item} />}
+              keyExtractor={newsItem => newsItem._id}
+            />
+          </View>
+        ) : (
+          <View style={styles.comfortableListCont}>
+            <FlatList
+              data={data}
+              renderItem={({item}) => <ComfortableCard data={item} />}
+              keyExtractor={newsItem => newsItem._id}
+            />
+          </View>
+        )}
       </View>
     );
   }
@@ -85,9 +97,15 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.primary,
     marginBottom: -2,
   },
-  listCont: {
+  comfortableListCont: {
     flex: 1,
     marginBottom: 10,
+  },
+  compactListCont: {
+    flex: 1,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
 });
 
