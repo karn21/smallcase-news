@@ -38,15 +38,11 @@ class ComfortableCard extends Component {
             <TouchableOpacity
               onPress={this.toggleExpand}
               style={styles.txtWrap}>
-              <Text style={styles.title}>
-                {headline.length > 68 && !expanded
-                  ? headline.substring(0, 65) + '...'
-                  : headline}
+              <Text style={styles.title} numberOfLines={expanded ? null : 2}>
+                {headline}
               </Text>
-              <Text style={styles.desc}>
-                {summary.length > 114 && !expanded
-                  ? summary.substring(0, 111) + '...'
-                  : summary}
+              <Text style={styles.desc} numberOfLines={expanded ? null : 3}>
+                {summary}
               </Text>
               {expanded && (
                 <Text style={styles.date}>{formatTimestamp(createdAt)}</Text>
