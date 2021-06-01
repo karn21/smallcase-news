@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Touchable,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import theme, {colors} from '../theme';
 import ComfortableCard from './ComfortableCard';
 import Header from './Header';
@@ -132,11 +125,11 @@ const styles = StyleSheet.create({
   },
   comfortableListCont: {
     flex: 1,
-    marginBottom: 10,
+    marginBottom: 30,
   },
   compactListCont: {
     flex: 1,
-    marginBottom: 10,
+    marginBottom: 30,
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
