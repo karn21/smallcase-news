@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import theme, {colors} from '../theme';
+import ComfortableCard from './ComfortableCard';
 import Header from './Header';
 import PrimaryToggle from './PrimaryToggle';
 
@@ -34,6 +35,9 @@ class Main extends Component {
             Compact View
           </Text>
         </View>
+        <View>
+          <ComfortableCard />
+        </View>
       </View>
     );
   }
@@ -44,6 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    marginBottom: 20,
   },
   viewText: {
     fontSize: 15,
