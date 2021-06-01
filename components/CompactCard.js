@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import theme from '../theme';
-import {formatTimestamp, getDate, getTime} from '../utility';
+import {colors} from '../theme';
+import {getDate, getTime} from '../utility';
 
 const CompactCard = props => {
   const {data} = props;
@@ -33,6 +33,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 12,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
   img: {
     height: 120,
@@ -44,6 +46,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     color: '#707070',
+    fontWeight: 'bold',
   },
   time: {
     textAlign: 'center',

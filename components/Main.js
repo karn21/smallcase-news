@@ -15,6 +15,7 @@ class Main extends Component {
     newsItems: [],
     loading: false,
     offset: 0,
+    refreshing: false,
   };
 
   toggleView = (value = null) => {
@@ -31,16 +32,17 @@ class Main extends Component {
 
   getNews = async () => {
     this.setState({loading: true});
-    const {offset, newsItems} = this.state;
+    const {offset, newsItems, refreshing} = this.state;
     const url = apiEndpoints.getNews(newsItemLimit, offset);
     try {
       const res = await axios.get(url);
       const data = res.data.data;
       if (res && res.status === 200) {
         this.setState({
-          newsItems: [...newsItems, ...data],
+          newsItems: refreshing ? data : [...newsItems, ...data],
           offset: offset + newsItemLimit,
           loading: false,
+          refreshing: false,
         });
       }
     } catch (err) {
@@ -48,12 +50,23 @@ class Main extends Component {
     }
   };
 
+  refreshData = () => {
+    this.setState(
+      {
+        refreshing: true,
+        offset: 0,
+        data: [],
+      },
+      () => this.getNews(),
+    );
+  };
+
   componentDidMount() {
     this.getNews();
   }
 
   render() {
-    const {compactView, newsItems, loading} = this.state;
+    const {compactView, newsItems, loading, refreshing} = this.state;
     return (
       <View style={theme.container}>
         <Header heading="Smallcase News" />
@@ -75,32 +88,30 @@ class Main extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-        {compactView ? (
-          <View style={styles.compactListCont} key={compactView}>
-            <FlatList
-              numColumns={2}
-              data={newsItems}
-              renderItem={({item}) => <CompactCard data={item} />}
-              keyExtractor={newsItem => newsItem._id}
-              onEndReached={this.getNews}
-              onEndReachedThreshold={0.6}
-              initialNumToRender={20}
-              ListFooterComponent={<LoadingComponent loading={loading} />}
-            />
-          </View>
-        ) : (
-          <View style={styles.comfortableListCont}>
-            <FlatList
-              data={newsItems}
-              renderItem={({item}) => <ComfortableCard data={item} />}
-              keyExtractor={newsItem => newsItem._id}
-              onEndReached={this.getNews}
-              onEndReachedThreshold={0.6}
-              initialNumToRender={20}
-              ListFooterComponent={<LoadingComponent loading={loading} />}
-            />
-          </View>
-        )}
+        <View
+          style={
+            compactView ? styles.compactListCont : styles.comfortableListCont
+          }
+          key={compactView}>
+          <FlatList
+            numColumns={compactView ? 2 : 1}
+            data={newsItems}
+            renderItem={({item}) =>
+              compactView ? (
+                <CompactCard data={item} />
+              ) : (
+                <ComfortableCard data={item} />
+              )
+            }
+            keyExtractor={newsItem => newsItem._id}
+            onEndReached={this.getNews}
+            onEndReachedThreshold={0.4}
+            initialNumToRender={20}
+            ListFooterComponent={<LoadingComponent loading={loading} />}
+            refreshing={refreshing}
+            onRefresh={this.refreshData}
+          />
+        </View>
       </View>
     );
   }
@@ -125,11 +136,11 @@ const styles = StyleSheet.create({
   },
   comfortableListCont: {
     flex: 1,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   compactListCont: {
     flex: 1,
-    marginBottom: 30,
+    marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },

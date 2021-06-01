@@ -32,12 +32,12 @@ class ComfortableCard extends Component {
               onPress={this.toggleExpand}
               style={styles.txtWrap}>
               <Text style={styles.title}>
-                {headline.length > 65 && !expanded
+                {headline.length > 68 && !expanded
                   ? headline.substring(0, 65) + '...'
                   : headline}
               </Text>
               <Text style={styles.desc}>
-                {summary.length > 120 && !expanded
+                {summary.length > 123 && !expanded
                   ? summary.substring(0, 120) + '...'
                   : summary}
               </Text>
