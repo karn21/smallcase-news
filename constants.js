@@ -1,5 +1,5 @@
 const apiEndpoints = {
-  getNews: (count = 20, offset = 0) =>
+  getNews: (count, offset) =>
     `https://api.smallcase.com/news/getNews?count=${count}&offset=${offset}`,
 };
 

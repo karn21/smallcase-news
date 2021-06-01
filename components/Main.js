@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import theme, {colors} from '../theme';
 import ComfortableCard from './ComfortableCard';
 import Header from './Header';
 import PrimaryToggle from './PrimaryToggle';
+import axios from 'axios';
+import {apiEndpoints} from '../constants';
 
 class Main extends Component {
   state = {
     compactView: false,
+    data: [],
+    loading: false,
   };
 
   toggleView = () => {
@@ -16,9 +20,26 @@ class Main extends Component {
     });
   };
 
-  render() {
-    const {compactView} = this.state;
+  getNews = async () => {
+    const url = apiEndpoints.getNews(20, 0);
+    try {
+      const res = await axios.get(url);
+      const data = res.data.data;
+      if (res && res.status === 200) {
+        this.setState({data});
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  componentDidMount() {
+    console.log('mounted');
+    this.getNews();
+  }
+
+  render() {
+    const {compactView, data} = this.state;
     return (
       <View style={theme.container}>
         <Header heading="Smallcase News" />
@@ -35,8 +56,12 @@ class Main extends Component {
             Compact View
           </Text>
         </View>
-        <View>
-          <ComfortableCard />
+        <View style={styles.listCont}>
+          <FlatList
+            data={data}
+            renderItem={({item}) => <ComfortableCard data={item} />}
+            keyExtractor={newsItem => newsItem._id}
+          />
         </View>
       </View>
     );
@@ -59,6 +84,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: colors.primary,
     marginBottom: -2,
+  },
+  listCont: {
+    flex: 1,
+    marginBottom: 10,
   },
 });
 
