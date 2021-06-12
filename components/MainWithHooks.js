@@ -79,11 +79,11 @@ const MainWithHooks = () => {
     }
   };
 
-  const refreshData = () => {
-    toggleRefreshing(true);
-    setOffset(0);
-    setFadeValue(new Animated.Value(0));
-  };
+  // const refreshData = () => {
+  //   toggleRefreshing(true);
+  //   setOffset(0);
+  //   setFadeValue(new Animated.Value(0));
+  // };
 
   const handleScroll = e => {
     setScrollPos(e.nativeEvent.contentOffset.y);
@@ -137,7 +137,7 @@ const MainWithHooks = () => {
           initialNumToRender={20}
           ListFooterComponent={<LoadingComponent loading={loading} />}
           refreshing={refreshing}
-          onRefresh={refreshData}
+          // onRefresh={refreshData}
           onScroll={handleScroll}
         />
       </View>
