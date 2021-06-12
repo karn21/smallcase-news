@@ -15,6 +15,7 @@ import axios from 'axios';
 import {apiEndpoints, newsItemLimit} from '../constants';
 import CompactCard from './CompactCard';
 import LoadingComponent from './LoadingComponent';
+import BackgroundCard from './BackgroundCard';
 
 class Main extends Component {
   state = {
@@ -63,6 +64,7 @@ class Main extends Component {
     try {
       const res = await axios.get(url);
       const data = res.data.data;
+      console.log(data);
       if (res && res.status === 200) {
         this.setState({
           newsItems: refreshing ? data : [...newsItems, ...data],
@@ -115,7 +117,7 @@ class Main extends Component {
           <View>
             <PrimaryToggle value={compactView} onChange={this.toggleView} />
           </View>
-          <TouchableOpacity onPress={() => this.toggleView(false)}>
+          <TouchableOpacity onPress={() => this.toggleView(true)}>
             <Text
               style={[styles.viewText, compactView ? styles.underline : null]}>
               Compact View
@@ -133,6 +135,7 @@ class Main extends Component {
             }}
             numColumns={compactView ? 2 : 1}
             data={newsItems}
+            // horizontal={true}
             renderItem={({item}) =>
               compactView ? (
                 <CompactCard
@@ -144,6 +147,7 @@ class Main extends Component {
                   data={item}
                   contStyle={{opacity: this.state.fadeValue}}
                 />
+                // <BackgroundCard data={item} />
               )
             }
             keyExtractor={newsItem => newsItem._id}

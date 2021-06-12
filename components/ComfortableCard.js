@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -10,50 +10,39 @@ import {
 import {colors} from '../theme';
 import {formatTimestamp} from '../utility';
 
-class ComfortableCard extends Component {
-  state = {
-    expanded: false,
-  };
+const ComfortableCard = props => {
+  const [expanded, toggleExpand] = useState(false);
 
-  toggleExpand = () => {
-    this.setState({
-      expanded: !this.state.expanded,
-    });
-  };
-
-  render() {
-    const {data = {}, contStyle = null} = this.props;
-    const {headline = '', summary = '', imageUrl = '', createdAt = ''} = data;
-    const {expanded} = this.state;
-    return (
-      <Animated.View style={contStyle}>
-        {data && (
-          <View style={[styles.cont]} elevation={1}>
-            <Image
-              style={styles.img}
-              source={{
-                uri: imageUrl,
-              }}
-            />
-            <TouchableOpacity
-              onPress={this.toggleExpand}
-              style={styles.txtWrap}>
-              <Text style={styles.title} numberOfLines={expanded ? null : 2}>
-                {headline}
-              </Text>
-              <Text style={styles.desc} numberOfLines={expanded ? null : 3}>
-                {summary}
-              </Text>
-              {expanded && (
-                <Text style={styles.date}>{formatTimestamp(createdAt)}</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        )}
-      </Animated.View>
-    );
-  }
-}
+  const {data = {}, contStyle = null} = props;
+  const {headline = '', summary = '', imageUrl = '', createdAt = ''} = data;
+  return (
+    <Animated.View style={contStyle}>
+      {data && (
+        <View style={[styles.cont]} elevation={1}>
+          <Image
+            style={styles.img}
+            source={{
+              uri: imageUrl,
+            }}
+          />
+          <TouchableOpacity
+            onPress={() => toggleExpand(expanded => !expanded)}
+            style={styles.txtWrap}>
+            <Text style={styles.title} numberOfLines={expanded ? null : 2}>
+              {headline}
+            </Text>
+            <Text style={styles.desc} numberOfLines={expanded ? null : 3}>
+              {summary}
+            </Text>
+            {expanded && (
+              <Text style={styles.date}>{formatTimestamp(createdAt)}</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
+    </Animated.View>
+  );
+};
 
 const styles = StyleSheet.create({
   cont: {

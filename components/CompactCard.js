@@ -28,7 +28,6 @@ const CompactCard = props => {
 const styles = StyleSheet.create({
   cont: {
     backgroundColor: '#eee',
-    flex: 1,
     marginHorizontal: 10,
     padding: 10,
     marginVertical: 12,
